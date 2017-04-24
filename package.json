@@ -83,5 +83,8 @@
     "webpack": "^2.2.1",
     "webpack-dev-server": "^2.3.0"
   },
-  "dependencies": {}
+  "dependencies": {
+    "axios": "^0.16.1",
+    "vue-axios": "^2.0.2"
+  }
 }

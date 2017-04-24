@@ -5,6 +5,11 @@ import Router from 'vue-router'
 import App from './App'
 import routes from './routes'
 
+import axios from 'axios'
+import VueAxios from 'vue-axios'
+ 
+Vue.use(VueAxios, axios)
+
 Vue.use(Electron)
 Vue.use(Router)
 Vue.config.debug = true
