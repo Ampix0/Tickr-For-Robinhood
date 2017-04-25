@@ -23,17 +23,26 @@
             }
         },
         methods: {
-            login: function(){
-                this.axios.post('https://api.robinhood.com/api-token-auth/', 
-                    {
-                            username: this.userLogin,
-                            password: this.userPass
+            login: function() {
+                this.axios.post('https://api.robinhood.com/api-token-auth/', {
+                        username: this.userLogin,
+                        password: this.userPass
                     })
-                .then(function(response) {
-                    console.log(response.data.token);
-                })
-                .catch(function(error) {
-                    console.log(error);
+                    .then(function(response) {
+                        this.$router.push({
+                            name: 'home-page',
+                            params: {
+                                authKey: response.data.token
+                            }
+                        })
+                    })
+                    .catch(function(error) {
+                        console.log(error);
+                    });
+            },
+            debug: function() {
+                this.$router.push({
+                    name: 'home-page'
                 });
             }
         }
@@ -43,7 +52,6 @@
 
 <style lang="scss">
     @import "~global/global.scss";
-    
     main {
         display: flex;
         flex-direction: column;
