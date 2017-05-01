@@ -5,7 +5,7 @@ export default [
     component: require('components/LoginPageView')
   },
     {
-        path: '/dashboard',
+        path: '/dashboard/:authKey',
         name: 'home-page',
         component: require('components/HomePageView')
     },

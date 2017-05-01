@@ -28,7 +28,7 @@
                         username: this.userLogin,
                         password: this.userPass
                     })
-                    .then(function(response) {
+                    .then((response) => {
                         this.$router.push({
                             name: 'home-page',
                             params: {

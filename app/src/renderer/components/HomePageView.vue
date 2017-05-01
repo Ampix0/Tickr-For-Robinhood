@@ -2,78 +2,7 @@
     <div id="wrapper">
         <section class="sidebar">
             <ul class="watchListContainer">
-                <li class="watchListItem">
-                    <div class="watchListItemSymbol">MSFT</div>
-                    <div class="watchListItemPrice"> $61 </div>
-                    <div class="watchListItemDelta"> 2% </div>
-                </li>
-                
-                <li class="watchListItem">
-                    <div class="watchListItemSymbol">MSFT</div>
-                    <div class="watchListItemPrice"> $61 </div>
-                    <div class="watchListItemDelta"> 2% </div>
-                </li>
-                
-                <li class="watchListItem">
-                    <div class="watchListItemSymbol">MSFT</div>
-                    <div class="watchListItemPrice"> $61 </div>
-                    <div class="watchListItemDelta"> 2% </div>
-                </li>
-                
-                <li class="watchListItem">
-                    <div class="watchListItemSymbol">MSFT</div>
-                    <div class="watchListItemPrice"> $61 </div>
-                    <div class="watchListItemDelta"> 2% </div>
-                </li>
-                
-                <li class="watchListItem">
-                    <div class="watchListItemSymbol">MSFT</div>
-                    <div class="watchListItemPrice"> $61 </div>
-                    <div class="watchListItemDelta"> 2% </div>
-                </li>
-                
-                <li class="watchListItem">
-                    <div class="watchListItemSymbol">MSFT</div>
-                    <div class="watchListItemPrice"> $61 </div>
-                    <div class="watchListItemDelta"> 2% </div>
-                </li>
-                
-                <li class="watchListItem">
-                    <div class="watchListItemSymbol">MSFT</div>
-                    <div class="watchListItemPrice"> $61 </div>
-                    <div class="watchListItemDelta"> 2% </div>
-                </li>
-                
-                <li class="watchListItem">
-                    <div class="watchListItemSymbol">MSFT</div>
-                    <div class="watchListItemPrice"> $61 </div>
-                    <div class="watchListItemDelta"> 2% </div>
-                </li>
-                
-                <li class="watchListItem">
-                    <div class="watchListItemSymbol">MSFT</div>
-                    <div class="watchListItemPrice"> $61 </div>
-                    <div class="watchListItemDelta"> 2% </div>
-                </li>
-                
-                <li class="watchListItem">
-                    <div class="watchListItemSymbol">MSFT</div>
-                    <div class="watchListItemPrice"> $61 </div>
-                    <div class="watchListItemDelta"> 2% </div>
-                </li>
-                
-                <li class="watchListItem">
-                    <div class="watchListItemSymbol">MSFT</div>
-                    <div class="watchListItemPrice"> $61 </div>
-                    <div class="watchListItemDelta"> 2% </div>
-                </li>
-                
-                <li class="watchListItem">
-                    <div class="watchListItemSymbol">MSFT</div>
-                    <div class="watchListItemPrice"> $61 </div>
-                    <div class="watchListItemDelta"> 2% </div>
-                </li>
-
+                <watchListItem v-for="item in watchList" fundementals="item.instrument"></watchListItem>
             </ul>
         </section>
         <main class="dashboard">
@@ -112,26 +41,6 @@
                 direction: ltr;
             }
         }
-        .watchListItem {
-            @include element;
-            padding: 2em;
-            display: flex;
-            background-color: $colorTextWhite;
-            justify-content: space-between;
-            align-content: center;
-            text-align: center;
-            div {
-                display: flex;
-                align-items: center;
-                text-align: center;
-            }
-            .watchListItemSymbol {
-                flex: 1;
-            }
-            .watchListItemPrice {
-                flex: 2;
-            }
-        }
     }
     
     .dashboard {
@@ -153,24 +62,38 @@
 
 
 <script>
+    import watchListItem from './HomePageView/watchListItem'
     export default {
         name: 'home-page',
+        components: {
+            watchListItem
+        },
+        data: function() {
+            return {
+                watchList: [],
+            }
+        },
+        methods: {
+
+            getWatchList: function() {
+                this.axios.get('https://api.robinhood.com/watchlists/Default/', {
+                        'headers': {
+                            'Authorization': 'Token ' + this.$route.params.authKey
+                        }
+                    })
+                    .then((response) => {
+                        console.log(response.data.results);
+                        this.watchList = response.data.results;
+                    })
+                    .catch((error) => {
+                        console.log(error);
+                    });
+            }
+
+        },
 
         mounted: function() {
-
-            //Fetch watchlist
-            this.axios.post('https://api.robinhood.com/watchlists/Default/', {
-                    Authorization: "Token " + this.$router.params.authKey
-
-                })
-                .then(function(response) {
-                    console.log(response);
-                })
-                .catch(function(error) {
-                    console.log(error);
-                })
-
-
+            this.getWatchList();
         }
     }
 
