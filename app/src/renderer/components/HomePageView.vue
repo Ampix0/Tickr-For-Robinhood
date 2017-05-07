@@ -2,7 +2,7 @@
     <div id="wrapper">
         <section class="sidebar">
             <ul class="watchListContainer">
-                <watchListItem v-for="item in watchList" fundementals="item.instrument"></watchListItem>
+                <watchListItem v-for="item in watchList" :fundementals="item.instrument" :authKey="authKey"></watchListItem>
             </ul>
         </section>
         <main class="dashboard">
@@ -73,12 +73,17 @@
                 watchList: [],
             }
         },
+        computed: {
+            authKey: function() {
+                return 'Token ' + this.$route.params.authKey;
+            }
+        },
         methods: {
 
             getWatchList: function() {
                 this.axios.get('https://api.robinhood.com/watchlists/Default/', {
                         'headers': {
-                            'Authorization': 'Token ' + this.$route.params.authKey
+                            'Authorization': this.authKey
                         }
                     })
                     .then((response) => {

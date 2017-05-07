@@ -1,7 +1,7 @@
 <template>
     
     <li class="watchListItem">
-                    <div class="watchListItemSymbol">MSFT</div>
+                    <div class="watchListItemSymbol">{{fundementals}}</div>
                     <div class="watchListItemPrice"> $61 </div>
                     <div class="watchListItemDelta"> 2% </div>
                 </li>
@@ -10,11 +10,49 @@
 
 <script>
     export default {
-        props: ['fundementals'],
+        props: ['fundementals', 'authKey'],
         methods: {
-            mounted: function() {
-                console.log(this.fundementals);
+            update: function() {
+                console.log('update');
+                this.axios.get(this.quoteURL, {
+                        'headers': {
+                            'Authorization': this.authKey
+                        }
+                    })
+                    .then((response) => {
+                        this.currentPrice = response.last_trade_price;
+                        this.previousClose = response.previous_close;
+                    })
+                    .catch((error) => {
+                        console.log(error);
+                    });
             }
+        },
+        data: function() {
+            return {
+                symbol: '',
+                name: '',
+                quoteURL: '',
+                currentPrice: '',
+                previousClose: '',
+
+            }
+        },
+        mounted: function() {
+            this.axios.get(this.fundementals, {
+                    'headers': {
+                        'Authorization': this.authKey
+                    }
+                })
+                .then((response) => {
+                    this.symbol = response.symbol;
+                    this.name = response.name;
+                    this.quoteURL = response.quote;
+                    this.update();
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
         }
     }
 

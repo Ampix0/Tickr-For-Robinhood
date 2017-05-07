@@ -13,7 +13,7 @@ const winURL = process.env.NODE_ENV === 'development' ?
 function createWindow() {
 
     if (process.env.NODE_ENV !== 'production') {
-        require('vue-devtools').uninstall()
+        require('vue-devtools').install()
     }
 
     /**
